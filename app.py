@@ -7,7 +7,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.log
 
-# from weather import *
+from weather import *
 
 from jinja2 import \
  Environment, PackageLoader, select_autoescape
