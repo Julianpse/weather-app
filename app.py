@@ -32,9 +32,11 @@ class MainHandler(TemplateHandler):
 
 class ResultsHandler(TemplateHandler):
     def post(self):
-        city_input = self.get_body_argument('city')
+        city_input = self.get_body_argument('city_input')
         if city_input:
-            self.render_template("results.html", {})
+            city_input = weather_request(city_input)
+            temp = json_data["main"]["temp"]
+            self.render_template("results.html", {'city': city_input, 'temp': temp})
         else:
             self.redirect(r"/error")
 
