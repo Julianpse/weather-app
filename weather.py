@@ -1,6 +1,7 @@
 import requests
 import json
-import pprint
+
+from app import * 
 
 def weather_request(city_input):
     payload = {'q': city_input, "APPID": "ec4678cf0af0d362007a3348b7c53b7a", "units": "imperial"}
@@ -12,6 +13,6 @@ def weather_request(city_input):
     with open('data.json', 'w') as fh:
         json.dump(data, fh)
 
-
+#Opens Data to be rendered on results page
 with open("data.json") as json_file:
     json_data = json.load(json_file)

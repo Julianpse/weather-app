@@ -8,6 +8,8 @@ import tornado.web
 import tornado.log
 
 from weather import *
+from city_check import *
+
 
 from jinja2 import \
  Environment, PackageLoader, select_autoescape
@@ -34,7 +36,7 @@ class ResultsHandler(TemplateHandler):
     def post(self):
         city_input = self.get_body_argument('city_input')
         if city_input:
-            city_input = weather_request(city_input)
+            weather_request(city_input)
             temp = json_data["main"]["temp"]
             self.render_template("results.html", {'city': city_input, 'temp': temp})
         else:
