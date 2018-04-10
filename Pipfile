@@ -7,5 +7,9 @@ name = "pypi"
 requests = "*"
 tornado = "*"
 "jinja2" = "*"
+peewee = "*"
+queries = "*"
+"psycopg2" = "*"
+"psycopg2-binary" = "*"
 
 [dev-packages]

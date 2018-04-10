@@ -1,5 +1,6 @@
 import os
 
+import queries
 import requests
 import json
 
@@ -7,12 +8,15 @@ import tornado.ioloop
 import tornado.web
 import tornado.log
 
+from jinja2 import \
+ Environment, PackageLoader, select_autoescape
+
+from peewee import *
+import psycopg2
+
 from weather import *
 from city_check import *
 
-
-from jinja2 import \
- Environment, PackageLoader, select_autoescape
 
 ENV = Environment(
   loader=PackageLoader('myapp', 'templates'),
@@ -20,6 +24,13 @@ ENV = Environment(
 )
 
 class TemplateHandler(tornado.web.RequestHandler):
+    def initialize(self):
+        try:
+            conn = psycopg2.connect("dbname='weatherapp' user='julianse' host='localhost' password=''")
+            cur = conn.cursor()
+        except:
+            print("I am unable to connect to the database")
+
     def render_template (self, tpl, context):
         template = ENV.get_template(tpl)
         context['page'] = self.request.path
@@ -27,6 +38,8 @@ class TemplateHandler(tornado.web.RequestHandler):
 
 class MainHandler(TemplateHandler):
     def get(self):
+        results = self.session.query('SELECT * FROM weather')
+        print(results)
         self.set_header(
             'Cache-Control',
             'no-store, no-cache, must-revalidate, max-age=0')
