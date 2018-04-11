@@ -10,8 +10,8 @@ from app import *
 ## This opens the connection to the postgres database
 def connect_to_postgres():
     try:
-        conn = psycopg2.connect("dbname='weatherapp' user='julianse' host='localhost' password=''")
-        cur = conn.cursor()
+        conn
+        cur
     except:
         print("I am unable to connect to the database, please check your connection")
     return conn, cur
