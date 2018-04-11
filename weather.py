@@ -31,7 +31,8 @@ def weather_request(city_input):
     cur.execute("SELECT temperature FROM weather WHERE time_of_day > NOW() - INTERVAL '15 minutes' AND city_name ~* %(city)s", {"city": city_input})
 
     temp = cur.fetchone()
-    return temp
+
+    return int(temp[0])
 
     conn.commit()
     cur.close()
