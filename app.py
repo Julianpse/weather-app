@@ -23,13 +23,16 @@ ENV = Environment(
   autoescape=select_autoescape(['html', 'xml'])
 )
 
+conn = psycopg2.connect("dbname='weatherapp' user='julianse' host='localhost' password=''")
+cur = conn.cursor()
+
 class TemplateHandler(tornado.web.RequestHandler):
     def initialize(self):
         try:
-            conn = psycopg2.connect("dbname='weatherapp' user='julianse' host='localhost' password=''")
-            cur = conn.cursor()
+            conn
+            cur
         except:
-            print("I am unable to connect to the database")
+            print("I am unable to connect to the database, please check your connection")
 
     def render_template (self, tpl, context):
         template = ENV.get_template(tpl)
@@ -38,8 +41,6 @@ class TemplateHandler(tornado.web.RequestHandler):
 
 class MainHandler(TemplateHandler):
     def get(self):
-        results = self.session.query('SELECT * FROM weather')
-        print(results)
         self.set_header(
             'Cache-Control',
             'no-store, no-cache, must-revalidate, max-age=0')
@@ -49,8 +50,7 @@ class ResultsHandler(TemplateHandler):
     def post(self):
         city_input = self.get_body_argument('city_input')
         if city_input:
-            weather_request(city_input)
-            temp = json_data["main"]["temp"]
+            temp = weather_request(city_input)
             self.render_template("results.html", {'city': city_input, 'temp': temp})
         else:
             self.redirect(r"/error")

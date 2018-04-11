@@ -11,5 +11,6 @@ peewee = "*"
 queries = "*"
 "psycopg2" = "*"
 "psycopg2-binary" = "*"
+python-crontab = "*"
 
 [dev-packages]
