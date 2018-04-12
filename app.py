@@ -1,6 +1,5 @@
 import os
 
-import queries
 import requests
 import json
 
@@ -11,11 +10,11 @@ import tornado.log
 from jinja2 import \
  Environment, PackageLoader, select_autoescape
 
-from peewee import *
 import psycopg2
 
 from weather import *
 from city_check import *
+from icons import *
 
 
 ENV = Environment(
@@ -49,9 +48,13 @@ class MainHandler(TemplateHandler):
 class ResultsHandler(TemplateHandler):
     def post(self):
         city_input = self.get_body_argument('city_input')
-        if city_input:
+        valid_city = search_city_dict(city_input)
+        if city_input and city_input in valid_city:
             temp = weather_request(city_input)
-            self.render_template("results.html", {'city': city_input, 'temp': temp})
+            temp_f = temp[0]
+            id = temp[1]
+            id = format_picture_links(id)
+            self.render_template("results.html", {'city': city_input, 'temp': temp_f, 'id': id})
         else:
             self.redirect(r"/error")
 

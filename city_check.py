@@ -4,8 +4,7 @@ import requests
 from weather import *
 from app import *
 
-#Iterates through citylist.json to check if city input is valid - still need to hook up to main app
-#needs work 
+#Iterates through citylist.json to check if city is a valid API query 
 def search_city_dict(city_input):
     valid_city = []
     with open ("citylist.json") as city_list:
@@ -15,4 +14,4 @@ def search_city_dict(city_input):
         if i["name"] == city_input:
             valid_city.append(city_input)
 
-            print(valid_city)
+    return valid_city

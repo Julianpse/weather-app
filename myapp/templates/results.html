@@ -2,6 +2,7 @@
 {% block content %}
 <div class = "container" style = "text-align:center">
   <h3>The weather in {{ city }}:<h3>
-  <p> It is currently {{ temp }} degrees.<p>
+    <img src= "{{ id }}" id ="icon">
+  <p> It is currently {{ temp }} degrees Fahrenheit.<p>
 </div>
 {% endblock %}

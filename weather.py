@@ -5,8 +5,7 @@ import json
 import psycopg2
 
 from app import *
-
-
+from icons import *
 ## This opens the connection to the postgres database
 def connect_to_postgres():
     try:
@@ -26,13 +25,14 @@ def weather_request(city_input):
 
     location = data["name"]
     temperature = int(data["main"]["temp"])
+    weather_id = int(data['weather'][0]["id"])
 
-    cur.execute("INSERT INTO weather(city_name, temperature, time_of_day) VALUES (%s, %s, LOCALTIMESTAMP)", (location, temperature))
-    cur.execute("SELECT temperature FROM weather WHERE time_of_day > NOW() - INTERVAL '15 minutes' AND city_name ~* %(city)s", {"city": city_input})
+    cur.execute("INSERT INTO weather(city_name, temperature, time_of_day, weather_id) VALUES (%s, %s, LOCALTIMESTAMP, %s)", (location, temperature, weather_id))
+    cur.execute("SELECT temperature, weather_id FROM weather WHERE time_of_day > NOW() - INTERVAL '15 minutes' AND city_name ~* %(city)s", {"city": city_input})
 
     temp = cur.fetchone()
-
-    return int(temp[0])
+    id = cur.fetchone()
+    return int(temp[0]), int(weather_id)
 
     conn.commit()
     cur.close()
